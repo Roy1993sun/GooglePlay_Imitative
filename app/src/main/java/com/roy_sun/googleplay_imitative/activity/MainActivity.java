@@ -6,6 +6,7 @@ import com.roy_sun.googleplay_imitative.utils.UIUtils;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -27,7 +28,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Bind(R.id.main_viewpager)
     protected ViewPager mViewPager;
 
-    private String[] titles;
+    @Bind(R.id.main_tabs)
+    protected TabLayout mTabs;
+    private   String[]  titles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void initData() {
         titles =UIUtils.getStringArray(R.array.pagers);
         mViewPager.setAdapter(new MainAdapter());
+
+        mTabs.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -145,6 +150,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         public void destroyItem(ViewGroup container, int position, Object object) {
 
             container.removeView((View) object);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
         }
     }
 }
