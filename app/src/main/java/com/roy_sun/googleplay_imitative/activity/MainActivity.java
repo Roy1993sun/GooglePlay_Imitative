@@ -2,23 +2,22 @@ package com.roy_sun.googleplay_imitative.activity;
 
 import com.roy_sun.googleplay_imitative.R;
 import com.roy_sun.googleplay_imitative.base.BaseActivity;
+import com.roy_sun.googleplay_imitative.fragment.HomeFragment;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +56,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void initData() {
         titles =UIUtils.getStringArray(R.array.pagers);
-        mViewPager.setAdapter(new MainAdapter());
+        mViewPager.setAdapter(new MainAdapter(getSupportFragmentManager()));
 
         mTabs.setupWithViewPager(mViewPager);
     }
@@ -119,7 +118,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
-    private class MainAdapter extends PagerAdapter {
+
+    private class MainAdapter extends FragmentStatePagerAdapter {
+
+        public MainAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return new HomeFragment();
+        }
 
         @Override
         public int getCount() {
@@ -130,31 +139,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            //// TODO: 2016/2/9 0009
-            TextView textView = new TextView(MainActivity.this);
-            textView.setText(titles[position]);
-            textView.setTextSize(24);
-            textView.setGravity(Gravity.CENTER);
-
-            container.addView(textView);
-            return textView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-
-            container.removeView((View) object);
-        }
-
-        @Override
         public CharSequence getPageTitle(int position) {
             return titles[position];
         }
     }
 }
+
