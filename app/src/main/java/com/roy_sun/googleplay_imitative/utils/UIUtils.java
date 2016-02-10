@@ -22,6 +22,11 @@ public class UIUtils {
 
     }
 
+    public static Context getContext() {
+        return mBaseContext;
+    }
+
+
     /*↓↓↓↓↓↓↓↓↓↓ 属于handler的工具方法 ↓↓↓↓↓↓↓↓↓↓*/
     public static void post(Runnable task) {
         mHandler.post(task);

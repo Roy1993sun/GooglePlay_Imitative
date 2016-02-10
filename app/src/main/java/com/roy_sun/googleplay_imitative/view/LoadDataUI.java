@@ -109,7 +109,7 @@ public abstract class LoadDataUI extends FrameLayout {
     }
 
     public enum Result {
-        SUCCESS(STATE_SUCCESS), ERROR(STATE_ERROR), EMPTY(STATE_EMPTY);
+        SUCCESS(STATE_SUCCESS), FAILED(STATE_ERROR), EMPTY(STATE_EMPTY);
 
         private final int mState;
 

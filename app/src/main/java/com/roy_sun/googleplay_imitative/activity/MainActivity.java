@@ -2,7 +2,7 @@ package com.roy_sun.googleplay_imitative.activity;
 
 import com.roy_sun.googleplay_imitative.R;
 import com.roy_sun.googleplay_imitative.base.BaseActivity;
-import com.roy_sun.googleplay_imitative.fragment.HomeFragment;
+import com.roy_sun.googleplay_imitative.fragment.FragmentFactory;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 
 import android.os.Bundle;
@@ -127,7 +127,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         @Override
         public Fragment getItem(int position) {
-            return new HomeFragment();
+
+            /*-------- 通过factory得到相应的fragment --------*/
+            return FragmentFactory.getFragment(position);
         }
 
         @Override
