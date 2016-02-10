@@ -1,12 +1,12 @@
 package com.roy_sun.googleplay_imitative.fragment;
 
 import com.roy_sun.googleplay_imitative.R;
+import com.roy_sun.googleplay_imitative.base.SuperBaseAdapter;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 import com.roy_sun.googleplay_imitative.view.LoadDataUI;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,7 +26,7 @@ public class HomeFragment extends LoadDataFragment {
     protected LoadDataUI.Result doInBackground() {
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -43,33 +43,17 @@ public class HomeFragment extends LoadDataFragment {
 
         ListView mListView = new ListView(UIUtils.getContext());
 
-        mListView.setAdapter(new HomeAdapter());
+        mListView.setAdapter(new HomeAdapter(mDatas));
 
         return mListView;
     }
 
 
-    private class HomeAdapter extends BaseAdapter {
+    private class HomeAdapter extends SuperBaseAdapter<String> {
 
-        @Override
-        public int getCount() {
-            if (mDatas != null) {
-                return mDatas.size();
-            }
-            return 0;
-        }
 
-        @Override
-        public Object getItem(int position) {
-            if (mDatas != null) {
-                mDatas.get(position);
-            }
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
+        public HomeAdapter(List<String> datas) {
+            super(datas);
         }
 
         @Override
