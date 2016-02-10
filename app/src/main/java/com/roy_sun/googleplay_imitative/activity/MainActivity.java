@@ -3,6 +3,7 @@ package com.roy_sun.googleplay_imitative.activity;
 import com.roy_sun.googleplay_imitative.R;
 import com.roy_sun.googleplay_imitative.base.BaseActivity;
 import com.roy_sun.googleplay_imitative.fragment.FragmentFactory;
+import com.roy_sun.googleplay_imitative.fragment.LoadDataFragment;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 
 import android.os.Bundle;
@@ -22,7 +23,8 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,
+        ViewPager.OnPageChangeListener {
 
     @Bind(R.id.main_viewpager)
     protected ViewPager mViewPager;
@@ -37,12 +39,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -59,6 +59,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mViewPager.setAdapter(new MainAdapter(getSupportFragmentManager()));
 
         mTabs.setupWithViewPager(mViewPager);
+
+        /*-------- 设置viewpager的监听 --------*/
+        mViewPager.addOnPageChangeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        /*-------- 移除监听 --------*/
+        mViewPager.removeOnPageChangeListener(this);
     }
 
     @Override
@@ -116,6 +126,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        /*-------- 选中时让fragment加载数据 --------*/
+        LoadDataFragment fragment= FragmentFactory.getFragment(position);
+        fragment.loadData();
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
 

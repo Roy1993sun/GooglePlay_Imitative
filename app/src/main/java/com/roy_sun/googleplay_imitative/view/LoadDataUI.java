@@ -1,12 +1,14 @@
 package com.roy_sun.googleplay_imitative.view;
 
 import com.roy_sun.googleplay_imitative.R;
+import com.roy_sun.googleplay_imitative.manager.ThreadManager;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 /**
  * 负责加载数据的view
@@ -27,7 +29,7 @@ public abstract class LoadDataUI extends FrameLayout {
     public static final int STATE_ERROR   = 2;
     public static final int STATE_EMPTY   = 3;
     public static final int STATE_SUCCESS = 4;
-    private int mCurrState;
+    private             int mCurrState    = STATE_NONE;
 
     private View mLoadingView;// 加载中的UI
     private View mErrorView; // 错误的UI
@@ -51,6 +53,15 @@ public abstract class LoadDataUI extends FrameLayout {
 
 
         mErrorView = View.inflate(getContext(), R.layout.pager_error, null);
+        mErrorView.findViewById(R.id.error_btn_retry)
+                  .setOnClickListener(new OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                          Toast.makeText(getContext(), "load data", Toast.LENGTH_SHORT)
+                               .show();
+                          loadData();
+                      }
+                  });
         addView(mErrorView);
 
 
@@ -70,7 +81,8 @@ public abstract class LoadDataUI extends FrameLayout {
     }
 
     private void updateUI() {
-        mLoadingView.setVisibility(mCurrState == STATE_LOADING || mCurrState == STATE_NONE ? View.VISIBLE : View.GONE);
+        mLoadingView.setVisibility(
+                mCurrState == STATE_LOADING || mCurrState == STATE_NONE ? View.VISIBLE : View.GONE);
 
         mErrorView.setVisibility(mCurrState == STATE_ERROR ? View.VISIBLE : View.GONE);
         mEmptyView.setVisibility(mCurrState == STATE_EMPTY ? View.VISIBLE : View.GONE);
@@ -91,7 +103,17 @@ public abstract class LoadDataUI extends FrameLayout {
      */
     public void loadData() {
 
-        new Thread(new LoadDataTask()).start();
+        /*-------- 如果当前已经加载出success或loading页面,则不需要再次加载 --------*/
+        if (mCurrState == STATE_SUCCESS || mCurrState == STATE_LOADING) {
+            return;
+        }
+        /*-------- 如果是error或empty时改变状态 再次加载 --------*/
+        mCurrState = STATE_LOADING;
+        safeUpdateUI();
+
+//        new Thread(new LoadDataTask()).start();
+        /*-------- 使用threadpool --------*/
+        ThreadManager.getNormalPool().execute(new LoadDataTask());
     }
 
     protected abstract Result onLoadData();

@@ -1,6 +1,5 @@
 package com.roy_sun.googleplay_imitative.fragment;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.util.SparseArrayCompat;
 
 /**
@@ -9,11 +8,11 @@ import android.support.v4.util.SparseArrayCompat;
 public class FragmentFactory {
 
 //    private static Map<Integer, Fragment> mCatch;
-    private static SparseArrayCompat<Fragment> mCatch = new SparseArrayCompat();
+    private static SparseArrayCompat<LoadDataFragment> mCatch = new SparseArrayCompat();
 
-    public static Fragment getFragment(int position) {
+    public static LoadDataFragment getFragment(int position) {
 
-        Fragment fragment = mCatch.get(position);
+        LoadDataFragment fragment = (LoadDataFragment) mCatch.get(position);
 
         if (fragment != null) {
             return fragment;
