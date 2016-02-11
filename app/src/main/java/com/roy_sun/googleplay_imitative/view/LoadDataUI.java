@@ -29,7 +29,7 @@ public abstract class LoadDataUI extends FrameLayout {
     public static final int STATE_ERROR   = 2;
     public static final int STATE_EMPTY   = 3;
     public static final int STATE_SUCCESS = 4;
-    private             int mCurrState    = STATE_NONE;
+    private             int mCurrentState = STATE_NONE;
 
     private View mLoadingView;// 加载中的UI
     private View mErrorView; // 错误的UI
@@ -82,19 +82,19 @@ public abstract class LoadDataUI extends FrameLayout {
 
     private void updateUI() {
         mLoadingView.setVisibility(
-                mCurrState == STATE_LOADING || mCurrState == STATE_NONE ? View.VISIBLE : View.GONE);
+                mCurrentState == STATE_LOADING || mCurrentState == STATE_NONE ? View.VISIBLE : View.GONE);
 
-        mErrorView.setVisibility(mCurrState == STATE_ERROR ? View.VISIBLE : View.GONE);
-        mEmptyView.setVisibility(mCurrState == STATE_EMPTY ? View.VISIBLE : View.GONE);
+        mErrorView.setVisibility(mCurrentState == STATE_ERROR ? View.VISIBLE : View.GONE);
+        mEmptyView.setVisibility(mCurrentState == STATE_EMPTY ? View.VISIBLE : View.GONE);
 
-        if (mCurrState == STATE_SUCCESS && mSuccessView == null) {
+        if (mCurrentState == STATE_SUCCESS && mSuccessView == null) {
 
             mSuccessView = onLoadSuccessView();
             addView(mSuccessView);
         }
         // 加载成功的显示
         if (mSuccessView != null) {
-            mSuccessView.setVisibility(mCurrState == STATE_SUCCESS ? View.VISIBLE : View.GONE);
+            mSuccessView.setVisibility(mCurrentState == STATE_SUCCESS ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -104,11 +104,11 @@ public abstract class LoadDataUI extends FrameLayout {
     public void loadData() {
 
         /*-------- 如果当前已经加载出success或loading页面,则不需要再次加载 --------*/
-        if (mCurrState == STATE_SUCCESS || mCurrState == STATE_LOADING) {
+        if (mCurrentState == STATE_SUCCESS || mCurrentState == STATE_LOADING) {
             return;
         }
         /*-------- 如果是error或empty时改变状态 再次加载 --------*/
-        mCurrState = STATE_LOADING;
+        mCurrentState = STATE_LOADING;
         safeUpdateUI();
 
 //        new Thread(new LoadDataTask()).start();
@@ -124,7 +124,7 @@ public abstract class LoadDataUI extends FrameLayout {
         @Override
         public void run() {
             Result result = onLoadData();
-            mCurrState = result.getState();
+            mCurrentState = result.getState();
 
             safeUpdateUI();
         }

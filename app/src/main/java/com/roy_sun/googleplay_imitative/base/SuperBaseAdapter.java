@@ -40,7 +40,21 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        BaseHolder holder;
+        if (convertView == null) {
+            holder = getItemHolder();
+
+            convertView = holder.gerRootView();
+            convertView.setTag(holder);
+        } else {
+            holder = (BaseHolder) convertView.getTag();
+        }
+
+        T data = mDatas.get(position);
+        holder.setData(data);
+
+        return convertView;
     }
 
+    protected abstract BaseHolder getItemHolder();
 }

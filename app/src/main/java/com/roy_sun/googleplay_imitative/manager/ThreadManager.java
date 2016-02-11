@@ -58,8 +58,7 @@ public class ThreadManager {
                 //                int maximumPoolSize = 3; // 最大线程池大小,最多可以执行3个线程
                 //                long keepAliveTime = 5 * 1000; // 等待新的任务的时间,如果未等到新的任务则销毁
                 TimeUnit unit = TimeUnit.MILLISECONDS; // 单位
-                BlockingQueue<Runnable> workQueue = null; // 任务队列
-                workQueue = new LinkedBlockingDeque();
+                BlockingQueue<Runnable> workQueue = new LinkedBlockingDeque();
                 ThreadFactory threadFactory = Executors.defaultThreadFactory();
                 RejectedExecutionHandler handler = new ThreadPoolExecutor.DiscardPolicy();// 异常捕获
 
