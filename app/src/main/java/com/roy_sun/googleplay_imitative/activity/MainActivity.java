@@ -6,9 +6,10 @@ import com.roy_sun.googleplay_imitative.fragment.FragmentFactory;
 import com.roy_sun.googleplay_imitative.fragment.LoadDataFragment;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 
+import org.itheima.tabindicator.library.TabIndicator;
+
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -30,8 +31,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected ViewPager mViewPager;
 
     @Bind(R.id.main_tabs)
-    protected TabLayout mTabs;
-    private   String[]  titles;
+    protected TabIndicator mTabs;
+    private   String[]     titles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +59,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         titles =UIUtils.getStringArray(R.array.pagers);
         mViewPager.setAdapter(new MainAdapter(getSupportFragmentManager()));
 
-        mTabs.setupWithViewPager(mViewPager);
+        mTabs.setViewPager(mViewPager);
 
         /*-------- 设置viewpager的监听 --------*/
-        mViewPager.addOnPageChangeListener(this);
+        mTabs.addOnPageChangeListener(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         /*-------- 移除监听 --------*/
-        mViewPager.removeOnPageChangeListener(this);
+        mTabs.removeOnPageChangeListener(this);
     }
 
     @Override

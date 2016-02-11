@@ -5,7 +5,6 @@ import com.roy_sun.googleplay_imitative.view.LoadDataUI;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ public abstract class LoadDataFragment extends BaseFragment {
             @Nullable
             Bundle savedInstanceState) {
         if (mUi == null) {
-            Log.d(TAG, "onCreateView mui为空");
             mUi = new LoadDataUI(getActivity()) {
                 @Override
                 protected Result onLoadData() {

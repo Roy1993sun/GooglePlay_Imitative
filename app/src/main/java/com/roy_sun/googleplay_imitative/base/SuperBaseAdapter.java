@@ -7,6 +7,8 @@ import android.widget.BaseAdapter;
 import java.util.List;
 
 /**
+ * 属于controller层,控制数据的获取与传递,
+ * 由于未知所得的数据类型, 则用泛型替代.
  * Created by Roy_Sun on 2016/2/11 0011.
  */
 public abstract class SuperBaseAdapter<T> extends BaseAdapter {
@@ -38,6 +40,7 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         BaseHolder holder;
@@ -56,5 +59,9 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * 暴露出去的方法,由具体的fragment去实现
+     * @return 返回一个具体的holder加载到页面中
+     */
     protected abstract BaseHolder getItemHolder();
 }

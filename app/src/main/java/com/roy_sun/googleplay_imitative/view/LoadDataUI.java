@@ -29,7 +29,8 @@ public abstract class LoadDataUI extends FrameLayout {
     public static final int STATE_ERROR   = 2;
     public static final int STATE_EMPTY   = 3;
     public static final int STATE_SUCCESS = 4;
-    private             int mCurrentState = STATE_NONE;
+
+    private int mCurrentState = STATE_NONE;
 
     private View mLoadingView;// 加载中的UI
     private View mErrorView; // 错误的UI
@@ -81,20 +82,47 @@ public abstract class LoadDataUI extends FrameLayout {
     }
 
     private void updateUI() {
-        mLoadingView.setVisibility(
-                mCurrentState == STATE_LOADING || mCurrentState == STATE_NONE ? View.VISIBLE : View.GONE);
+//        mLoadingView.setVisibility(mCurrentState == STATE_LOADING ||
+//                                           mCurrentState == STATE_NONE ? View.VISIBLE : View.GONE);
+//
+//        mErrorView.setVisibility(mCurrentState == STATE_ERROR ? View.VISIBLE : View.GONE);
+//        mEmptyView.setVisibility(mCurrentState == STATE_EMPTY ? View.VISIBLE : View.GONE);
+//
+//        if (mCurrentState == STATE_SUCCESS && mSuccessView == null) {
+//
+//            mSuccessView = onLoadSuccessView();
+//            addView(mSuccessView);
+//        }
+//        // 加载成功的显示
+//        if (mSuccessView != null) {
+//            mSuccessView.setVisibility(mCurrentState == STATE_SUCCESS ? View.VISIBLE : View.GONE);
+//        }
 
-        mErrorView.setVisibility(mCurrentState == STATE_ERROR ? View.VISIBLE : View.GONE);
-        mEmptyView.setVisibility(mCurrentState == STATE_EMPTY ? View.VISIBLE : View.GONE);
+        mLoadingView.setVisibility((mCurrentState == STATE_LOADING || mCurrentState == STATE_NONE)
+                                           ? View.VISIBLE
+                                           : View.GONE);
+
+        //加载错误的显示
+        mErrorView.setVisibility(mCurrentState == STATE_ERROR
+                                         ? View.VISIBLE
+                                         : View.GONE);
+        //加载空的显示
+        mEmptyView.setVisibility(mCurrentState == STATE_EMPTY
+                                         ? View.VISIBLE
+                                         : View.GONE);
+
 
         if (mCurrentState == STATE_SUCCESS && mSuccessView == null) {
-
+            //没有添加过成功的view,不确定的
             mSuccessView = onLoadSuccessView();
             addView(mSuccessView);
         }
-        // 加载成功的显示
+
         if (mSuccessView != null) {
-            mSuccessView.setVisibility(mCurrentState == STATE_SUCCESS ? View.VISIBLE : View.GONE);
+            //加载成功的显示
+            mSuccessView.setVisibility(mCurrentState == STATE_SUCCESS
+                                               ? View.VISIBLE
+                                               : View.GONE);
         }
     }
 
@@ -111,9 +139,10 @@ public abstract class LoadDataUI extends FrameLayout {
         mCurrentState = STATE_LOADING;
         safeUpdateUI();
 
-//        new Thread(new LoadDataTask()).start();
+        //        new Thread(new LoadDataTask()).start();
         /*-------- 使用threadpool --------*/
-        ThreadManager.getNormalPool().execute(new LoadDataTask());
+        ThreadManager.getNormalPool()
+                     .execute(new LoadDataTask());
     }
 
     protected abstract Result onLoadData();
