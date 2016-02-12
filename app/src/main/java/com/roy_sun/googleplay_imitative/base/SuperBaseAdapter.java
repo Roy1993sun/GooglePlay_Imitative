@@ -1,12 +1,16 @@
 package com.roy_sun.googleplay_imitative.base;
 
 import com.roy_sun.googleplay_imitative.holder.LoadMoreHolder;
+import com.roy_sun.googleplay_imitative.manager.ThreadManager;
+import com.roy_sun.googleplay_imitative.utils.Constants;
+import com.roy_sun.googleplay_imitative.utils.UIUtils;
 
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,6 +23,8 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
     private List<T> mData;
     private final static int TYPE_LOAD_MORE   = 0;
     private static final int TYPE_NORMAL_ITEM = 1;
+
+    private boolean isLoadingMore = false; // 记录当前是否正在加载更多数据
 
     private LoadMoreHolder mLoadMoreHolder;
 
@@ -98,12 +104,37 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
 
         if (getItemViewType(position) == TYPE_LOAD_MORE) {
             // TODO: 2016/2/12 0012 加载更多的数据
-
+            if (!hasLoadMore()) {
+                // 不具备加载的条件
+                holder.setData(LoadMoreHolder.STATE_EMPTY);
+            } else {
+                // 具备加载的条件  显示时去触发加载数据
+                loadMoreData();
+            }
         } else {
             T data = mData.get(position);
             holder.setData(data);
         }
         return convertView;
+    }
+
+    private void loadMoreData() {
+
+        if (isLoadingMore) {
+            return;
+        }
+        isLoadingMore  = true;
+        // 加载loading
+        mLoadMoreHolder.setData(LoadMoreHolder.STATE_LOADING);
+
+        // 加载数据
+
+        ThreadManager.getNormalPool()
+                     .execute(new LoadMoreTask());
+    }
+
+    protected boolean hasLoadMore() {
+        return false;
     }
 
 
@@ -120,4 +151,56 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
      * @return 返回一个具体的holder加载到页面中
      */
     protected abstract BaseHolder getItemHolder();
+
+
+    protected List<T> onLoadMore() throws IOException {return null;}
+
+    private class LoadMoreTask implements Runnable {
+
+        @Override
+        public void run() {
+            // 加载数据
+            List<T> more = null;
+            int s = LoadMoreHolder.STATE_LOADING;
+            try {
+                Thread.sleep(500);
+                more = onLoadMore();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                // 失败则加载提示UI
+                s = LoadMoreHolder.STATE_ERROR;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            final int state = s;
+            final List<T> datas = more;
+            UIUtils.post(new Runnable() {
+                @Override
+                public void run() {
+                    int current = state;
+                    if (datas == null || datas.size() == 0) {
+                        current = LoadMoreHolder.STATE_EMPTY;
+                    } else {
+
+                        if (datas.size() < Constants.PAGE_SIZE) {
+                            /*-------- 服务器没有更多数据 --------*/
+                            current = LoadMoreHolder.STATE_EMPTY;
+                        } else {
+                            current = LoadMoreHolder.STATE_LOADING;
+                        }
+                        mData.addAll(datas);
+                        notifyDataSetChanged();
+
+                    }
+
+                    mLoadMoreHolder.setData(current);
+
+                    // 加载更多的任务执行完成 修改状态
+                    isLoadingMore = false;
+                }
+            });
+        }
+    }
 }

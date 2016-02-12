@@ -6,6 +6,7 @@ import com.roy_sun.googleplay_imitative.base.BaseHolder;
 import com.roy_sun.googleplay_imitative.base.SuperBaseAdapter;
 import com.roy_sun.googleplay_imitative.bean.HomeBean;
 import com.roy_sun.googleplay_imitative.holder.AppItemHolder;
+import com.roy_sun.googleplay_imitative.utils.Constants;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 import com.roy_sun.googleplay_imitative.view.LoadDataUI;
 
@@ -35,7 +36,7 @@ public class HomeFragment extends LoadDataFragment {
     protected LoadDataUI.Result doInBackground() {
 
         /*-------- 此处IP为我本机的内网IP --------*/
-        String url = "http://192.168.1.194:8080/GooglePlayServer/home?index=0";
+        String url = Constants.SERVER_URL + "/home?index=0";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -49,7 +50,7 @@ public class HomeFragment extends LoadDataFragment {
                 String json = response.body()
                                       .string();
 
-                Log.d(TAG, "json : "+ json);
+                Log.d(TAG, "json : " + json);
                 /*-------- 解析Json --------*/
                 Gson gson = new Gson();
                 HomeBean bean = gson.fromJson(json, HomeBean.class);
@@ -93,11 +94,47 @@ public class HomeFragment extends LoadDataFragment {
         }
 
         @Override
+        protected boolean hasLoadMore() {
+            return true;
+        }
+
+        @Override
         protected BaseHolder getItemHolder() {
             return new AppItemHolder();
         }
 
+        @Override
+        protected List<HomeBean.AppBean> onLoadMore() throws IOException {
 
+            return loadMore();
+        }
     }
 
+    private List<HomeBean.AppBean> loadMore() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        String url = Constants.SERVER_URL + "/home?index=" + mDatas.size();
+
+        Request request = new Request.Builder().get()
+                                               .url(url)
+                                               .build();
+
+        Response response = client.newCall(request)
+                                  .execute();
+
+        if (response.isSuccessful()) {
+            String json = response.body()
+                                  .string();
+            Gson gson = new Gson();
+            HomeBean bean = gson.fromJson(json, HomeBean.class);
+
+            if (bean != null) {
+                return bean.list;
+            }
+        } else {
+            return null;
+        }
+
+        return null;
+    }
 }
