@@ -56,6 +56,7 @@
                     android:layout_height="14dp"
                     android:layout_marginTop="2dp"
                     android:isIndicator="true"
+                    android:progressDrawable="@drawable/rating_bg"
                     android:rating="3.2" />
 
                 <!-- 应用的大小 -->
@@ -120,7 +121,7 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="阿萨德发空间阿萨德了飞机阿萨德啊谁发的了敬爱是发动机阿飞阿喀琉斯发动机拉丝机发的了卡机范德萨暗室逢灯；连接"
+            android:text="这里是应用的描述文字这里是应用的描述文字这里是应用的描述文字这里是应用的描述文字这里是应用的描述文字这里是应用的描述文字"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
     </LinearLayout>

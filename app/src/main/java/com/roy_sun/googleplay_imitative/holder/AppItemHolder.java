@@ -3,6 +3,7 @@ package com.roy_sun.googleplay_imitative.holder;
 import com.roy_sun.googleplay_imitative.R;
 import com.roy_sun.googleplay_imitative.base.BaseHolder;
 import com.roy_sun.googleplay_imitative.bean.HomeBean;
+import com.roy_sun.googleplay_imitative.utils.Constants;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 
 import android.text.format.Formatter;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import it.sephiroth.android.library.picasso.Picasso;
 
 /**
  * Created by Roy_Sun on 2016/2/11 0011.
@@ -44,10 +46,20 @@ public class AppItemHolder extends BaseHolder<HomeBean.AppBean> {
     protected void refreshUI(HomeBean.AppBean data) {
 
         mTvDes.setText(data.des);
-        mTvSize.setText(Formatter.formatFileSize(UIUtils.getContext(),data.size));
+        mTvSize.setText(Formatter.formatFileSize(UIUtils.getContext(), data.size));
         mTvTitle.setText(data.name);
-        
-        //// TODO: 2016/2/12 0012
+
+
+        mRbStars.setRating(data.stars);
+
+        /*-------- 设置图片 --------*/
+        String url = Constants.IMAGE_BASE + data.iconUrl;
+        Picasso.with(UIUtils.getContext())
+               .load(url)
+               .placeholder(R.mipmap.ic_download)
+               .error(R.mipmap.ic_default)
+               .into(mIvIcon);
+
     }
 
 

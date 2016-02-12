@@ -83,7 +83,6 @@ public class HomeFragment extends LoadDataFragment {
 
         //// TODO: 2016/2/11 0011
         mListView.setAdapter(new HomeAdapter(mDatas));
-
         return mListView;
     }
 
