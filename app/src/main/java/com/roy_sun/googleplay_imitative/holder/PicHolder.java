@@ -22,7 +22,7 @@ import it.sephiroth.android.library.picasso.Picasso;
  * 轮播图的holder
  * Created by Roy_Sun on 2016/2/13 0013.
  */
-public class PicHolder extends BaseHolder<List<String>> {
+public class PicHolder extends BaseHolder<List<String>> implements ViewPager.OnPageChangeListener {
     @Bind(R.id.item_home_pic_pager)
     ViewPager    mViewPager;
     @Bind(R.id.item_home_pic_dot_container)
@@ -44,8 +44,48 @@ public class PicHolder extends BaseHolder<List<String>> {
     protected void refreshUI(List<String> data) {
         // set data
         this.mData = data;
-
         mViewPager.setAdapter(new PicAdapter());
+
+        mPicDotContainer.removeAllViews();
+
+        for (int i = 0; i < data.size(); i++) {
+
+            View dot = new View(UIUtils.getContext());
+            dot.setBackgroundResource(R.mipmap.indicator_normal);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtils.dp2px(20),
+                                                                             UIUtils.dp2px(20));
+
+            if (i != 0) {
+                params.leftMargin = UIUtils.dp2px(10);
+                params.bottomMargin = UIUtils.dp2px(30);
+            } else {
+                dot.setBackgroundResource(R.mipmap.indicator_selected);
+            }
+            mPicDotContainer.addView(dot, params);
+        }
+
+        mViewPager.addOnPageChangeListener(this);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        int count = mPicDotContainer.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            View view = mPicDotContainer.getChildAt(i);
+            view.setBackgroundResource(
+                    position == i ? R.mipmap.indicator_selected : R.mipmap.indicator_normal);
+        }
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
 
     }
 

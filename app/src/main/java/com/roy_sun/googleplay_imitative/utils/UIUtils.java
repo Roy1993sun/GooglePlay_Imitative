@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.util.TypedValue;
 
 /**
  * Created by Roy_Sun on 2016/2/9 0009.
@@ -52,5 +53,22 @@ public class UIUtils {
     }
     /*↑↑↑↑↑  方法结束  ↑↑↑↑↑*/
 
+
+    /**
+     * dp 转换 px
+     *
+     * @param dp 输入的dp值
+     * @return 转换后的px值
+     */
+    public static int dp2px(float dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, dp,
+                                               getResources().getDisplayMetrics());
+    }
+
+    public static int px2dp(float px) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px,
+                                               getResources().getDisplayMetrics());
+
+    }
 
 }
