@@ -16,7 +16,7 @@ public abstract class BaseHolder<T> {
 
     protected abstract View initView();
 
-    public View gerRootView() {
+    public View getRootView() {
         return mRootView;
     }
 
@@ -27,6 +27,7 @@ public abstract class BaseHolder<T> {
     }
 
     protected abstract void refreshUI(T data);
+
 
 
 }

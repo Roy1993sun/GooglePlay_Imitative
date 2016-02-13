@@ -4,6 +4,7 @@ import com.roy_sun.googleplay_imitative.base.BaseHolder;
 import com.roy_sun.googleplay_imitative.base.SuperBaseAdapter;
 import com.roy_sun.googleplay_imitative.bean.HomeBean;
 import com.roy_sun.googleplay_imitative.holder.AppItemHolder;
+import com.roy_sun.googleplay_imitative.holder.PicHolder;
 import com.roy_sun.googleplay_imitative.protocol.HomeProtocol;
 import com.roy_sun.googleplay_imitative.utils.UIUtils;
 import com.roy_sun.googleplay_imitative.view.LoadDataUI;
@@ -45,11 +46,16 @@ public class HomeFragment extends LoadDataFragment {
         }
     }
 
-
     @Override
     protected View initSuccessView() {
 
         ListView mListView = new ListView(UIUtils.getContext());
+
+        /*-------- 添加轮播图的头 --------*/
+        PicHolder picHolder = new PicHolder();
+        mListView.addHeaderView(picHolder.getRootView());
+        picHolder.setData(mPictures);
+
 
         //// TODO: 2016/2/11 0011 轮播图
         mListView.setAdapter(new HomeAdapter(mDatas));
@@ -87,30 +93,5 @@ public class HomeFragment extends LoadDataFragment {
         }
         return null;
 
-
-        //        OkHttpClient client = new OkHttpClient();
-        //        String url = Constants.SERVER_URL + "/home?index=" + mDatas.size();
-        //
-        //        Request request = new Request.Builder().get()
-        //                                               .url(url)
-        //                                               .build();
-        //
-        //        Response response = client.newCall(request)
-        //                                  .execute();
-        //
-        //        if (response.isSuccessful()) {
-        //            String json = response.body()
-        //                                  .string();
-        //            Gson gson = new Gson();
-        //            HomeBean bean = gson.fromJson(json, HomeBean.class);
-        //
-        //            if (bean != null) {
-        //                return bean.list;
-        //            }
-        //        } else {
-        //            return null;
-        //        }
-        //
-        //        return null;
     }
 }

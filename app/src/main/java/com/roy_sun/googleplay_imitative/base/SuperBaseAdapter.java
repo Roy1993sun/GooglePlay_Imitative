@@ -92,7 +92,7 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
                 holder = getItemHolder();
             }
 
-            convertView = holder.gerRootView();
+            convertView = holder.getRootView();
             convertView.setTag(holder);
 
 
