@@ -65,6 +65,10 @@ public class PicHolder extends BaseHolder<List<String>> implements ViewPager.OnP
         }
 
         mViewPager.addOnPageChangeListener(this);
+
+        int item = Integer.MAX_VALUE / 2;
+        item = item - item % mData.size();
+        mViewPager.setCurrentItem(item);
     }
 
     @Override
@@ -74,6 +78,7 @@ public class PicHolder extends BaseHolder<List<String>> implements ViewPager.OnP
 
     @Override
     public void onPageSelected(int position) {
+        position = position % mData.size();
         int count = mPicDotContainer.getChildCount();
 
         for (int i = 0; i < count; i++) {
@@ -94,7 +99,7 @@ public class PicHolder extends BaseHolder<List<String>> implements ViewPager.OnP
         @Override
         public int getCount() {
             if (mData != null) {
-                return mData.size();
+                return Integer.MAX_VALUE;
             }
             return 0;
         }
@@ -107,6 +112,7 @@ public class PicHolder extends BaseHolder<List<String>> implements ViewPager.OnP
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
 
+            position = position % mData.size();
             ImageView iv = new ImageView(UIUtils.getContext());
             // 加载图片数据
             String url = Constants.IMAGE_BASE + mData.get(position);
