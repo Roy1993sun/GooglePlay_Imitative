@@ -16,6 +16,7 @@ import okhttp3.Response;
  * Created by Roy_Sun on 2016/2/13 0013.
  */
 public abstract class BaseProtocol<T> {
+    private static final String TAG = "BaseProtocol";
 
     protected abstract String getInterfacePath();
 
@@ -61,15 +62,15 @@ public abstract class BaseProtocol<T> {
         Request.Builder builder = new Request.Builder().get()
                                                        .url(url);
 
-//        添加自定义头
-//        Map<String, String> headers = getHeaders();
-//        if (headers != null) {
-//            for (Map.Entry<String, String> entry : headers.entrySet()) {
-//                String key = entry.getKey();
-//                String value = entry.getValue();
-//                builder.addHeader(key,value);
-//            }
-//        }
+        //        添加自定义头
+        //        Map<String, String> headers = getHeaders();
+        //        if (headers != null) {
+        //            for (Map.Entry<String, String> entry : headers.entrySet()) {
+        //                String key = entry.getKey();
+        //                String value = entry.getValue();
+        //                builder.addHeader(key,value);
+        //            }
+        //        }
         Request request = builder.build();
         Response response = client.newCall(request)
                                   .execute();

@@ -23,7 +23,7 @@ public class FragmentFactory {
                 fragment = new HomeFragment();
                 break;
             case 1:
-                fragment = new HomeFragment();
+                fragment = new AppFragment();
                 break;
             case 2:
                 fragment = new HomeFragment();
