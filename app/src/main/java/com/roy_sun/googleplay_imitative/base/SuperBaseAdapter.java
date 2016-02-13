@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -153,7 +152,7 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
     protected abstract BaseHolder getItemHolder();
 
 
-    protected List<T> onLoadMore() throws IOException {return null;}
+    protected List<T> onLoadMore() throws Exception {return null;}
 
     private class LoadMoreTask implements Runnable {
 
@@ -166,12 +165,10 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter {
                 Thread.sleep(500);
                 more = onLoadMore();
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 // 失败则加载提示UI
                 s = LoadMoreHolder.STATE_ERROR;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
 
             final int state = s;
