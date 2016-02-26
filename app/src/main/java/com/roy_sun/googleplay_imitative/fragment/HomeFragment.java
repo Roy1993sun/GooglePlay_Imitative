@@ -21,7 +21,7 @@ public class HomeFragment extends LoadDataFragment {
 
     private static final String TAG = "HomeFragment";
 
-    private List<HomeBean.AppBean> mDatas;
+    private List<HomeBean.AppBean> mData;
     private List<String>           mPictures; // 轮播图
     private HomeProtocol           mProtocol;
 
@@ -37,7 +37,7 @@ public class HomeFragment extends LoadDataFragment {
             if (bean == null) {
                 return LoadDataUI.Result.EMPTY;
             }
-            mDatas = bean.list;
+            mData = bean.list;
             mPictures = bean.picture;
             return LoadDataUI.Result.SUCCESS;
         } catch (Exception e) {
@@ -58,14 +58,14 @@ public class HomeFragment extends LoadDataFragment {
 
 
         //// TODO: 2016/2/11 0011 轮播图
-        mListView.setAdapter(new HomeAdapter(mDatas));
+        mListView.setAdapter(new HomeAdapter(mData));
         return mListView;
     }
 
 
     private class HomeAdapter extends SuperBaseAdapter<HomeBean.AppBean> {
-        public HomeAdapter(List<HomeBean.AppBean> datas) {
-            super(datas);
+        public HomeAdapter(List<HomeBean.AppBean> data) {
+            super(data);
         }
 
         @Override
@@ -87,7 +87,7 @@ public class HomeFragment extends LoadDataFragment {
     /*-------- 通过网络加载数据 --------*/
     private List<HomeBean.AppBean> loadMore() throws Exception {
 
-        HomeBean bean = mProtocol.loadPage(mDatas.size());
+        HomeBean bean = mProtocol.loadPage(mData.size());
         if (bean != null) {
             return bean.list;
         }

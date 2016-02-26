@@ -21,13 +21,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-/*
- *  @项目名：  TabIndicator 
- *  @包名：    org.itheima.tabindicator.library
- *  @文件名:   TabIndicator
- *  @创建者:   Administrator
- *  @描述：    TODO
- */
 public class TabIndicator
         extends HorizontalScrollView
 {
