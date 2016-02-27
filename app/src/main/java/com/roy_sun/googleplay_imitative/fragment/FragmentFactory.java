@@ -29,7 +29,7 @@ public class FragmentFactory {
                 fragment = new GameFragment();
                 break;
             case 3:
-                fragment = new HomeFragment();
+                fragment = new SubjectFragment();
                 break;
             case 4:
                 fragment = new HomeFragment();
