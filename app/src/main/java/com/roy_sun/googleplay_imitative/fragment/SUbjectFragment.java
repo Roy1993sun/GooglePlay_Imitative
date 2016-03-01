@@ -57,6 +57,7 @@ public class SubjectFragment extends LoadDataFragment {
             super(datas);
         }
 
+
         @Override
         protected BaseHolder getItemHolder() {
             return new SubjectHolder();
